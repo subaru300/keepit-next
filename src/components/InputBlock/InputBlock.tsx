@@ -10,9 +10,10 @@ import {
   Input,
   Textarea,
 } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik';
+import { Field, Form, Formik, FormikHelpers } from 'formik';
 import { useAppDispatch } from '@/lib/hooks';
 import { addData } from '@/lib/features/notes/notesSlice';
+import { FormValues } from '@/interface/interface';
 
 interface Props {
   onCancel: () => void;
@@ -29,7 +30,10 @@ const InputBlock = ({ onCancel }: Props) => {
     return error;
   };
 
-  const onSubmitHandler = (values, actions) => {
+  const onSubmitHandler = (
+    values: FormValues,
+    actions: FormikHelpers<FormValues>
+  ) => {
     setTimeout(() => {
       actions.setSubmitting(false);
       dispatch(
@@ -57,7 +61,7 @@ const InputBlock = ({ onCancel }: Props) => {
         {props => (
           <Form>
             <Field name='heading' validate={validateField}>
-              {({ field, form }) => (
+              {({ field, form }: { field: any; form: any }) => (
                 <FormControl
                 // isInvalid={form.errors.heading && form.touched.heading}
                 >
@@ -75,7 +79,7 @@ const InputBlock = ({ onCancel }: Props) => {
               )}
             </Field>
             <Field name='note' validate={validateField}>
-              {({ field, form }) => (
+              {({ field, form }: { field: any; form: any }) => (
                 <FormControl isInvalid={form.errors.note && form.touched.note}>
                   <Textarea
                     {...field}
@@ -91,7 +95,7 @@ const InputBlock = ({ onCancel }: Props) => {
             </Field>
             <Flex mb='5px' justifyContent='space-around'>
               <Field name='color'>
-                {({ field, form }) => (
+                {({ field, form }: { field: any; form: any }) => (
                   <Flex alignItems='center'>
                     <Input {...field} type='color' w='60px' border='none' />
                     <FormLabel fontSize='14px'>BG color</FormLabel>
@@ -99,7 +103,7 @@ const InputBlock = ({ onCancel }: Props) => {
                 )}
               </Field>
               <Field name='isInArchive'>
-                {({ field, form }) => (
+                {({ field, form }: { field: any; form: any }) => (
                   <Flex alignItems='center'>
                     {/* <FormLabel fontSize='10px' display='flex'></FormLabel> */}
                     <Checkbox {...field} colorScheme='green'>
