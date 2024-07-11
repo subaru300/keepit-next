@@ -10,6 +10,12 @@ export const notesSlice = createSlice({
     addData: (state, action: PayloadAction<INote>) => {
       state.push(action.payload);
     },
+    editNote: (state, action: PayloadAction<INote>) => {
+      const index = state.findIndex(note => note.id === action.payload.id);
+      if (index !== -1) {
+        state[index] = action.payload;
+      }
+    },
     removeData: (state, action: PayloadAction<string>) => {
       return state.filter(item => item.id !== action.payload);
     },
@@ -29,6 +35,6 @@ export const notesSlice = createSlice({
   },
 });
 
-export const { addData, removeData, sortData } = notesSlice.actions;
+export const { addData, editNote, removeData, sortData } = notesSlice.actions;
 
 export default notesSlice.reducer;

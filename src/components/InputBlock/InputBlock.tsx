@@ -14,6 +14,7 @@ import { Field, Form, Formik, FormikHelpers } from 'formik';
 import { useAppDispatch } from '@/lib/hooks';
 import { addData } from '@/lib/features/notes/notesSlice';
 import { FormValues } from '@/interface/interface';
+import { setSearchText } from '@/lib/features/search/searchSlice';
 
 interface Props {
   onCancel: () => void;
@@ -46,6 +47,7 @@ const InputBlock = ({ onCancel }: Props) => {
           isInArchive: values.isInArchive,
         })
       );
+      dispatch(setSearchText(''));
     }, 500);
   };
 

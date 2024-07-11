@@ -1,11 +1,12 @@
 'use client';
 
 import { setSearchText } from '@/lib/features/search/searchSlice';
-import { useAppDispatch } from '@/lib/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { CiSearch } from 'react-icons/ci';
 
 const Search = () => {
+  const searchInputText = useAppSelector(state => state.search.searchText);
   const dispatch = useAppDispatch();
 
   const onSearchHandler = (value: string) => {
@@ -20,6 +21,7 @@ const Search = () => {
       <Input
         placeholder='Search'
         paddingLeft='30px'
+        value={searchInputText}
         onChange={e => onSearchHandler(e.target.value)}
       />
     </InputGroup>
