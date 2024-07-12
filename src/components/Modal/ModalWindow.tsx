@@ -61,7 +61,7 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
 
       if (!editedHeader && !editedText) {
         dispatch(removeData(note));
-        close();
+        onClose();
         return;
       }
 
