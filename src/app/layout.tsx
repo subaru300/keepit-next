@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
+import { ColorModeScript, CSSReset, Grid, GridItem } from '@chakra-ui/react';
 import { Providers } from './providers';
-import { fonts } from './fonts';
-import { ColorModeScript, CSSReset } from '@chakra-ui/react';
-import theme from './theme';
 import StoreProvider from './StoreProvider';
+import Navigation from '@/components/Sidebar/Navigation';
+import Header from '@/components/Header/Header';
+import { fonts } from './fonts';
+import theme from './theme';
 
 export const metadata: Metadata = {
   title: 'KeepIt',
@@ -22,7 +24,34 @@ export default function RootLayout({
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />
           <Providers>
             <CSSReset />
-            {children}
+            <Grid
+              templateAreas={`"header header"
+                  "nav main"
+                  "footer footer"`}
+              gridTemplateRows={'auto 1fr 100px'}
+              gridTemplateColumns={'auto 1fr'}
+              h='100vh'
+              gap='1'
+            >
+              <GridItem padding='5px' area={'header'}>
+                <Header />
+              </GridItem>
+              <GridItem pl='2' area={'nav'}>
+                <Navigation />
+              </GridItem>
+              <GridItem
+                area={'main'}
+                display='flex'
+                justifyContent='center'
+                overflow='scroll'
+                maxH='1000px'
+              >
+                {children}
+              </GridItem>
+              <GridItem pl='2' bg='blue.300' area={'footer'}>
+                Footer
+              </GridItem>
+            </Grid>
           </Providers>
         </body>
       </html>

@@ -16,8 +16,8 @@ export const notesSlice = createSlice({
         state[index] = action.payload;
       }
     },
-    removeData: (state, action: PayloadAction<string>) => {
-      return state.filter(item => item.id !== action.payload);
+    removeData: (state, action: PayloadAction<INote>) => {
+      return state.filter(item => item.id !== action.payload.id);
     },
     sortData: (state, action: PayloadAction<string>) => {
       const sortedState = [...state];

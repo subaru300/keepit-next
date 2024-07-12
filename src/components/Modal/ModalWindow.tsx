@@ -3,12 +3,13 @@ import { useAppDispatch } from '@/lib/hooks';
 import { Field, Form, Formik, FormikHelpers } from 'formik';
 import { editNote, removeData } from '@/lib/features/notes/notesSlice';
 import {
-  Button,
   ButtonGroup,
   Checkbox,
+  Divider,
   Flex,
   FormControl,
   FormLabel,
+  IconButton,
   Input,
   Modal,
   ModalBody,
@@ -20,6 +21,10 @@ import {
   Text,
   Textarea,
 } from '@chakra-ui/react';
+import { MdDeleteOutline } from 'react-icons/md';
+import { IoIosSave } from 'react-icons/io';
+import { addToTrash } from '@/lib/features/trash/trashSlice';
+import { addToArchive } from '@/lib/features/archive/archiveSlice';
 import { FormValues, INote } from '@/interface/interface';
 
 interface Props {
@@ -45,22 +50,27 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
     setTimeout(() => {
       actions.setSubmitting(false);
 
+      const editedNote = {
+        id: note.id,
+        date: String(new Date()),
+        title: editedHeader,
+        text: editedText,
+        bgColor: !values.color ? note.bgColor : values.color,
+        isInArchive: values.isInArchive,
+      };
+
       if (!editedHeader && !editedText) {
-        dispatch(removeData(note.id));
+        dispatch(removeData(note));
         close();
         return;
       }
 
-      dispatch(
-        editNote({
-          id: note.id,
-          date: String(new Date()),
-          title: editedHeader,
-          text: editedText,
-          bgColor: values.color,
-          isInArchive: values.isInArchive,
-        })
-      );
+      if (values.isInArchive === false) {
+        dispatch(editNote(editedNote));
+      } else {
+        dispatch(addToArchive(note));
+        dispatch(removeData(note));
+      }
     }, 100);
     onClose();
   };
@@ -71,6 +81,12 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
 
   const onTextChangeHandler = (text: string) => {
     setEditedText(text);
+  };
+
+  const onDeleteNote = (note: INote) => {
+    dispatch(removeData(note));
+    dispatch(addToTrash(note));
+    onClose();
   };
 
   return (
@@ -90,6 +106,7 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
               initialValues={{
                 heading: editedHeader,
                 note: editedText,
+                isInArchive: false,
               }}
               onSubmit={onSubmitHandler}
             >
@@ -101,8 +118,12 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
                         <Text fontSize='12px' opacity='0.6' mb='5px'>
                           Edit heading:
                         </Text>
+                        <Divider />
                         <Input
                           {...field}
+                          fontWeight='bold'
+                          focusBorderColor='transparent'
+                          border='none'
                           value={editedHeader}
                           onChange={e => onHeadingChangeHandler(e.target.value)}
                           type='text'
@@ -117,23 +138,28 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
                         <Text fontSize='12px' opacity='0.6' mb='5px'>
                           Edit note:
                         </Text>
+                        <Divider />
                         <Textarea
                           {...field}
                           value={editedText}
+                          focusBorderColor='transparent'
+                          border='none'
                           onChange={e => onTextChangeHandler(e.target.value)}
                           type='text'
                           mb='5px'
-                          minH='250px'
+                          minH='150px'
                         />
                       </FormControl>
                     )}
                   </Field>
+                  <Divider />
                   <Flex justifyContent='space-around'>
                     <Field name='color'>
                       {({ field, form }: { field: any; form: any }) => (
                         <Flex alignItems='center'>
                           <Input
                             {...field}
+                            value={note.bgColor}
                             type='color'
                             w='60px'
                             border='none'
@@ -145,7 +171,11 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
                     <Field name='isInArchive'>
                       {({ field, form }: { field: any; form: any }) => (
                         <Flex alignItems='center'>
-                          <Checkbox {...field} colorScheme='green'>
+                          <Checkbox
+                            {...field}
+                            colorScheme='green'
+                            isChecked={field.value}
+                          >
                             Add to archive
                           </Checkbox>
                         </Flex>
@@ -156,17 +186,26 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
                     display='flex'
                     flexDir='column'
                     alignItems='right'
+                    p='5px'
                   >
                     <Text fontSize='10px' opacity='0.6' textAlign='right'>
                       Last changes {note?.date?.slice(0, 21)}
                     </Text>
-                    <ButtonGroup ml='auto' mt='20px'>
-                      <Button variant='ghost' mr={3} onClick={onClose}>
-                        Close
-                      </Button>
-                      <Button colorScheme='green' type='submit'>
-                        Save note
-                      </Button>
+                    <ButtonGroup ml='auto' mt='10px'>
+                      <IconButton
+                        aria-label='Delete note'
+                        icon={<MdDeleteOutline />}
+                        size='md'
+                        colorScheme='red'
+                        onClick={() => onDeleteNote(note)}
+                      />
+                      <IconButton
+                        type='submit'
+                        aria-label='Save note'
+                        icon={<IoIosSave />}
+                        size='md'
+                        colorScheme='green'
+                      />
                     </ButtonGroup>
                   </ModalFooter>
                 </Form>

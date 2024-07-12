@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+import ModalWindow from '../Modal/ModalWindow';
 import {
   ButtonGroup,
   Card,
@@ -15,12 +17,10 @@ import {
 import { MdDeleteOutline } from 'react-icons/md';
 import { CiEdit } from 'react-icons/ci';
 import { INote } from '@/interface/interface';
-import ModalWindow from '../Modal/ModalWindow';
-import { useState } from 'react';
 
 interface Props {
   notes: INote[];
-  onDeleteNote: (id: string) => void;
+  onDeleteNote: (note: INote) => void;
 }
 
 const NotesGrid = ({ notes, onDeleteNote }: Props) => {
@@ -40,17 +40,18 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
   };
 
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} gridGap='15px'>
+    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} gridGap='15px'>
       <ModalWindow isOpen={isOpen} onClose={onClose} note={selectedNote} />
       {notes.map(note => {
         return (
           <GridItem key={note.id}>
             <Card
               w='250px'
-              h='auto'
+              maxH='200px'
               minHeight='150px'
               position='relative'
               cursor='pointer'
+              overflow='scroll'
             >
               <CardBody bgColor={note.bgColor} borderRadius='6px'>
                 <ButtonGroup
@@ -70,15 +71,17 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
                     aria-label='Delete note'
                     icon={<MdDeleteOutline />}
                     size='sm'
-                    onClick={() => onDeleteNote(note.id)}
+                    onClick={() => onDeleteNote(note)}
                   />
                 </ButtonGroup>
 
-                <Heading as='h6' fontSize='20px' textAlign='center'>
+                <Heading as='h6' fontSize='20px'>
                   {note.title}
                 </Heading>
                 <Divider />
-                <Text fontSize='16px'>{note.text}</Text>
+                <Text fontSize='16px' whiteSpace='pre-wrap'>
+                  {note.text}
+                </Text>
               </CardBody>
             </Card>
           </GridItem>

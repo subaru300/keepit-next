@@ -4,14 +4,14 @@ export interface INote {
   title: string;
   text: string;
   bgColor: string | undefined;
-  isInArchive: boolean | undefined;
+  isInArchive: boolean;
 }
 
 export interface FormValues {
   heading: string;
   note: string;
   color?: string;
-  isInArchive?: boolean | undefined;
+  isInArchive: boolean;
 }
 
 export interface ISearch {

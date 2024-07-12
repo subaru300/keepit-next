@@ -1,6 +1,6 @@
+import Search from '../Search/Search';
 import { Flex, Heading } from '@chakra-ui/react';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
-import Search from '../Search/Search';
 
 const Header = () => {
   return (

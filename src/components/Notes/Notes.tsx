@@ -3,19 +3,23 @@
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import InputBlock from '../InputBlock/InputBlock';
-import { Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react';
 import { removeData, sortData } from '@/lib/features/notes/notesSlice';
 import CustomSelect from '../UI/CustomSelect/CusromSelect';
 import { selectFilteredNotes } from '@/lib/features/search/searchSelector';
 import NotesGrid from '../NotesGrid/NotesGrid';
+import { ImFileEmpty } from 'react-icons/im';
+import { addToTrash } from '@/lib/features/trash/trashSlice';
+import { INote } from '@/interface/interface';
 
-const Main = () => {
+const Notes = () => {
   const [isBlockVisible, setIsBlockVisible] = useState(false);
   const notes = useAppSelector(selectFilteredNotes);
   const dispatch = useAppDispatch();
 
-  const onDeleteNote = (id: string) => {
-    dispatch(removeData(id));
+  const onDeleteNote = (note: INote) => {
+    dispatch(removeData(note));
+    dispatch(addToTrash(note));
   };
 
   const onSortHandler = (value: string) => {
@@ -44,12 +48,15 @@ const Main = () => {
       {notes.length ? (
         <NotesGrid notes={notes} onDeleteNote={onDeleteNote} />
       ) : (
-        <Heading as='h6' fontSize='20px'>
-          Notes list is empty now. Please create your first one.
-        </Heading>
+        <Center display='flex' flexDir='column'>
+          <ImFileEmpty size={48} />
+          <Heading as='h6' fontSize='20px' mt='10px'>
+            Notes list is empty now. Please create your first one.
+          </Heading>
+        </Center>
       )}
     </Flex>
   );
 };
 
-export default Main;
+export default Notes;

@@ -1,4 +1,8 @@
-import { v4 as uuidv4 } from 'uuid';
+import { useAppDispatch } from '@/lib/hooks';
+import { Field, Form, Formik, FormikHelpers } from 'formik';
+import { addData } from '@/lib/features/notes/notesSlice';
+import { setSearchText } from '@/lib/features/search/searchSlice';
+import { addToArchive } from '@/lib/features/archive/archiveSlice';
 import {
   Button,
   ButtonGroup,
@@ -10,11 +14,8 @@ import {
   Input,
   Textarea,
 } from '@chakra-ui/react';
-import { Field, Form, Formik, FormikHelpers } from 'formik';
-import { useAppDispatch } from '@/lib/hooks';
-import { addData } from '@/lib/features/notes/notesSlice';
+import { v4 as uuidv4 } from 'uuid';
 import { FormValues } from '@/interface/interface';
-import { setSearchText } from '@/lib/features/search/searchSlice';
 
 interface Props {
   onCancel: () => void;
@@ -37,17 +38,24 @@ const InputBlock = ({ onCancel }: Props) => {
   ) => {
     setTimeout(() => {
       actions.setSubmitting(false);
-      dispatch(
-        addData({
-          id: uuidv4(),
-          date: String(new Date()),
-          title: values.heading,
-          text: values.note,
-          bgColor: values.color,
-          isInArchive: values.isInArchive,
-        })
-      );
+
+      const note = {
+        id: uuidv4(),
+        date: String(new Date()),
+        title: values.heading,
+        text: values.note,
+        bgColor: values.color,
+        isInArchive: values.isInArchive,
+      };
+
+      if (values.isInArchive) {
+        dispatch(addToArchive(note));
+      } else {
+        dispatch(addData(note));
+      }
+
       dispatch(setSearchText(''));
+      onCancel();
     }, 500);
   };
 
@@ -57,6 +65,7 @@ const InputBlock = ({ onCancel }: Props) => {
         initialValues={{
           heading: '',
           note: '',
+          isInArchive: false,
         }}
         onSubmit={onSubmitHandler}
       >
@@ -108,7 +117,11 @@ const InputBlock = ({ onCancel }: Props) => {
                 {({ field, form }: { field: any; form: any }) => (
                   <Flex alignItems='center'>
                     {/* <FormLabel fontSize='10px' display='flex'></FormLabel> */}
-                    <Checkbox {...field} colorScheme='green'>
+                    <Checkbox
+                      {...field}
+                      colorScheme='green'
+                      isChecked={field.value}
+                    >
                       Add to archive
                     </Checkbox>
                   </Flex>

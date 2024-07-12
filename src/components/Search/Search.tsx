@@ -1,7 +1,7 @@
 'use client';
 
-import { setSearchText } from '@/lib/features/search/searchSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { setSearchText } from '@/lib/features/search/searchSlice';
 import { Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
 import { CiSearch } from 'react-icons/ci';
 

@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Box, Center, Divider, Heading, Text } from '@chakra-ui/react';
 
 const Page404 = () => {
   const router = useRouter();
@@ -15,16 +16,16 @@ const Page404 = () => {
   }, [router]);
 
   return (
-    <div>
-      <div>
-        <h1>
+    <Center>
+      <Box>
+        <Heading as='h6' fontSize='24px'>
           Page not found
-          <span className='span' />
-          404
-        </h1>
-        <p>You will be redirected to the main page in 3 sec.</p>
-      </div>
-    </div>
+          <Divider m='10px 0' />
+          Error 404
+        </Heading>
+        <Text>You will be redirected to the main page in 3 sec.</Text>
+      </Box>
+    </Center>
   );
 };
 
