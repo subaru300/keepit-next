@@ -15,7 +15,7 @@ import { IoTrashOutline } from 'react-icons/io5';
 import { RxHamburgerMenu } from 'react-icons/rx';
 
 const Burger = () => {
-  const [selectedItem, setSelectedItem] = useState('');
+  const [selectedItem, setSelectedItem] = useState('/notes');
   const router = useRouter();
 
   const onChangeMenuHandler = (page: string) => {

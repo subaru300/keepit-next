@@ -1,4 +1,5 @@
 import { useAppDispatch } from '@/lib/hooks';
+import useCustomToast from '@/hooks/useToast';
 import { Field, Form, Formik, FormikHelpers } from 'formik';
 import { addNote } from '@/lib/features/notes/notesSlice';
 import { setSearchText } from '@/lib/features/search/searchSlice';
@@ -10,13 +11,15 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Input,
+  Radio,
+  RadioGroup,
+  Stack,
   Textarea,
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { FormValues } from '@/interface/interface';
-import useCustomToast from '@/hooks/useToast';
+import { colors } from '@/utils/constants/colors';
 
 interface Props {
   onCancel: () => void;
@@ -24,7 +27,7 @@ interface Props {
 
 const InputBlock = ({ onCancel }: Props) => {
   const dispatch = useAppDispatch();
-  const { showSuccessToast, showDangerToast } = useCustomToast();
+  const { showSuccessToast } = useCustomToast();
 
   const validateField = (value: string) => {
     let error;
@@ -44,7 +47,7 @@ const InputBlock = ({ onCancel }: Props) => {
       const note = {
         id: uuidv4(),
         date: String(new Date()),
-        title: values.heading,
+        title: values.heading ? values.heading : '',
         text: values.note,
         bgColor: values.color,
         isInArchive: values.isInArchive,
@@ -68,12 +71,13 @@ const InputBlock = ({ onCancel }: Props) => {
           heading: '',
           note: '',
           isInArchive: false,
+          color: '',
         }}
         onSubmit={onSubmitHandler}
       >
         {props => (
           <Form>
-            <Field name='heading' validate={validateField}>
+            <Field name='heading'>
               {({ field, form }: { field: any; form: any }) => (
                 <FormControl>
                   <Input
@@ -109,14 +113,24 @@ const InputBlock = ({ onCancel }: Props) => {
               <Field name='color'>
                 {({ field, form }: { field: any; form: any }) => (
                   <Flex alignItems='center'>
-                    <Input
+                    <RadioGroup
                       {...field}
-                      type='color'
-                      w='60px'
-                      h='30px'
-                      border='none'
-                    />
-                    <FormLabel fontSize='14px'>BG color</FormLabel>
+                      onChange={value => form.setFieldValue('color', value)}
+                      value={field.value}
+                    >
+                      <Stack direction='row'>
+                        {colors.map(color => {
+                          return (
+                            <Radio
+                              key={color}
+                              colorScheme={color}
+                              value={color}
+                              bgColor={color}
+                            />
+                          );
+                        })}
+                      </Stack>
+                    </RadioGroup>
                   </Flex>
                 )}
               </Field>

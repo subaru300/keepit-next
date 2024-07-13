@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <Flex borderTop='1px' borderColor={borderColor} justifyContent='center'>
       <Center>
-        <Text mt='20px' fontSize={{ base: '12px', md: '14px' }}>
+        <Text mt='20px' fontSize={{ base: '12px', md: '14px' }} m='10px'>
           This pet project was created using technologies such as Next.js,
           TypeScript, React Redux Toolkit, Chakra UI Kit, React Formik and
           others.

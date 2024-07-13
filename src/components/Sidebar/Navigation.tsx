@@ -23,7 +23,13 @@ const Navigation = () => {
   );
 
   return (
-    <Box borderRight='1px' borderColor={borderColor} h='100%' pr='20px'>
+    <Box
+      borderRight='1px'
+      borderColor={borderColor}
+      h='100%'
+      pr='10px'
+      pl='10px'
+    >
       <Tabs
         minW={{ md: '150px', base: '50px' }}
         alignItems='center'

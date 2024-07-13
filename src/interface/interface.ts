@@ -3,14 +3,14 @@ export interface INote {
   date: string;
   title: string;
   text: string;
-  bgColor: string | undefined;
+  bgColor: string;
   isInArchive: boolean;
 }
 
 export interface FormValues {
   heading: string;
   note: string;
-  color?: string;
+  color: string;
   isInArchive: boolean;
 }
 

@@ -8,7 +8,6 @@ import {
   Divider,
   Flex,
   FormControl,
-  FormLabel,
   IconButton,
   Input,
   Modal,
@@ -18,6 +17,9 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Radio,
+  RadioGroup,
+  Stack,
   Text,
   Textarea,
 } from '@chakra-ui/react';
@@ -27,6 +29,7 @@ import { addToTrash } from '@/lib/features/trash/trashSlice';
 import { addToArchive } from '@/lib/features/archive/archiveSlice';
 import { FormValues, INote } from '@/interface/interface';
 import useCustomToast from '@/hooks/useToast';
+import { colors } from '@/utils/constants/colors';
 
 interface Props {
   isOpen: boolean;
@@ -57,7 +60,7 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
         date: String(new Date()),
         title: editedHeader,
         text: editedText,
-        bgColor: !values.color ? note.bgColor : values.color,
+        bgColor: values.color,
         isInArchive: values.isInArchive,
       };
 
@@ -111,6 +114,7 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
               heading: editedHeader,
               note: editedText,
               isInArchive: false,
+              color: note.bgColor,
             }}
             onSubmit={onSubmitHandler}
           >
@@ -161,18 +165,28 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
                   <Field name='color'>
                     {({ field, form }: { field: any; form: any }) => (
                       <Flex alignItems='center'>
-                        <Input
+                        <RadioGroup
                           {...field}
-                          value={note.bgColor}
-                          type='color'
-                          w='60px'
-                          h='30px'
-                          border='none'
-                        />
-                        <FormLabel fontSize='14px'>BG color</FormLabel>
+                          onChange={value => form.setFieldValue('color', value)}
+                          value={field.value}
+                        >
+                          <Stack direction='row'>
+                            {colors.map(color => {
+                              return (
+                                <Radio
+                                  key={color}
+                                  colorScheme={color}
+                                  value={color}
+                                  bgColor={color}
+                                />
+                              );
+                            })}
+                          </Stack>
+                        </RadioGroup>
                       </Flex>
                     )}
                   </Field>
+
                   <Field name='isInArchive'>
                     {({ field, form }: { field: any; form: any }) => (
                       <Flex alignItems='center'>
