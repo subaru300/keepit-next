@@ -18,7 +18,12 @@ const Search = () => {
   };
 
   return (
-    <InputGroup display='flex' justifyContent='center' alignItems='center'>
+    <InputGroup
+      display='flex'
+      justifyContent='center'
+      alignItems='center'
+      w={{ base: '100%', md: '75%', xl: '60%' }}
+    >
       <InputLeftElement pointerEvents='none'>
         <CiSearch />
       </InputLeftElement>

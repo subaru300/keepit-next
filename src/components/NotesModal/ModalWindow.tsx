@@ -95,131 +95,130 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
   };
 
   return (
-    <>
-      <Modal
-        isCentered
-        onClose={onClose}
-        isOpen={isOpen}
-        motionPreset='slideInBottom'
-      >
-        <ModalOverlay />
-        <ModalContent minH='350px'>
-          <ModalHeader border='none'></ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Formik
-              initialValues={{
-                heading: editedHeader,
-                note: editedText,
-                isInArchive: false,
-              }}
-              onSubmit={onSubmitHandler}
-            >
-              {props => (
-                <Form>
-                  <Field name='heading'>
+    <Modal
+      isCentered
+      onClose={onClose}
+      isOpen={isOpen}
+      motionPreset='slideInBottom'
+    >
+      <ModalOverlay />
+      <ModalContent minH={{ base: '50%', md: '350px' }} w='98%'>
+        <ModalHeader border='none'></ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <Formik
+            initialValues={{
+              heading: editedHeader,
+              note: editedText,
+              isInArchive: false,
+            }}
+            onSubmit={onSubmitHandler}
+          >
+            {props => (
+              <Form>
+                <Field name='heading'>
+                  {({ field, form }: { field: any; form: any }) => (
+                    <FormControl>
+                      <Text fontSize='12px' opacity='0.6' mb='5px'>
+                        Edit heading:
+                      </Text>
+                      <Divider />
+                      <Input
+                        {...field}
+                        fontWeight='bold'
+                        focusBorderColor='transparent'
+                        border='none'
+                        value={editedHeader}
+                        onChange={e => onHeadingChangeHandler(e.target.value)}
+                        type='text'
+                        mb='5px'
+                      />
+                    </FormControl>
+                  )}
+                </Field>
+                <Field name='note'>
+                  {({ field, form }: { field: any; form: any }) => (
+                    <FormControl>
+                      <Text fontSize='12px' opacity='0.6' mb='5px'>
+                        Edit note:
+                      </Text>
+                      <Divider />
+                      <Textarea
+                        {...field}
+                        value={editedText}
+                        focusBorderColor='transparent'
+                        border='none'
+                        onChange={e => onTextChangeHandler(e.target.value)}
+                        type='text'
+                        mb='5px'
+                        minH={{ base: '260px', md: '150px' }}
+                      />
+                    </FormControl>
+                  )}
+                </Field>
+                <Divider />
+                <Flex justifyContent='space-around'>
+                  <Field name='color'>
                     {({ field, form }: { field: any; form: any }) => (
-                      <FormControl>
-                        <Text fontSize='12px' opacity='0.6' mb='5px'>
-                          Edit heading:
-                        </Text>
-                        <Divider />
+                      <Flex alignItems='center'>
                         <Input
                           {...field}
-                          fontWeight='bold'
-                          focusBorderColor='transparent'
+                          value={note.bgColor}
+                          type='color'
+                          w='60px'
+                          h='30px'
                           border='none'
-                          value={editedHeader}
-                          onChange={e => onHeadingChangeHandler(e.target.value)}
-                          type='text'
-                          mb='5px'
                         />
-                      </FormControl>
+                        <FormLabel fontSize='14px'>BG color</FormLabel>
+                      </Flex>
                     )}
                   </Field>
-                  <Field name='note'>
+                  <Field name='isInArchive'>
                     {({ field, form }: { field: any; form: any }) => (
-                      <FormControl>
-                        <Text fontSize='12px' opacity='0.6' mb='5px'>
-                          Edit note:
-                        </Text>
-                        <Divider />
-                        <Textarea
+                      <Flex alignItems='center'>
+                        <Checkbox
                           {...field}
-                          value={editedText}
-                          focusBorderColor='transparent'
-                          border='none'
-                          onChange={e => onTextChangeHandler(e.target.value)}
-                          type='text'
-                          mb='5px'
-                          minH='150px'
-                        />
-                      </FormControl>
+                          colorScheme='green'
+                          isChecked={field.value}
+                        >
+                          Add to archive
+                        </Checkbox>
+                      </Flex>
                     )}
                   </Field>
-                  <Divider />
-                  <Flex justifyContent='space-around'>
-                    <Field name='color'>
-                      {({ field, form }: { field: any; form: any }) => (
-                        <Flex alignItems='center'>
-                          <Input
-                            {...field}
-                            value={note.bgColor}
-                            type='color'
-                            w='60px'
-                            border='none'
-                          />
-                          <FormLabel fontSize='14px'>BG color</FormLabel>
-                        </Flex>
-                      )}
-                    </Field>
-                    <Field name='isInArchive'>
-                      {({ field, form }: { field: any; form: any }) => (
-                        <Flex alignItems='center'>
-                          <Checkbox
-                            {...field}
-                            colorScheme='green'
-                            isChecked={field.value}
-                          >
-                            Add to archive
-                          </Checkbox>
-                        </Flex>
-                      )}
-                    </Field>
-                  </Flex>
-                  <ModalFooter
-                    display='flex'
-                    flexDir='column'
-                    alignItems='right'
-                    p='5px'
-                  >
-                    <Text fontSize='10px' opacity='0.6' textAlign='right'>
-                      Last changes {note?.date?.slice(0, 21)}
-                    </Text>
-                    <ButtonGroup ml='auto' mt='10px'>
-                      <IconButton
-                        aria-label='Delete note'
-                        icon={<MdDeleteOutline />}
-                        size='md'
-                        colorScheme='red'
-                        onClick={() => onDeleteNote(note)}
-                      />
-                      <IconButton
-                        type='submit'
-                        aria-label='Save note'
-                        icon={<IoIosSave />}
-                        size='md'
-                        colorScheme='green'
-                      />
-                    </ButtonGroup>
-                  </ModalFooter>
-                </Form>
-              )}
-            </Formik>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+                </Flex>
+                <ModalFooter
+                  display='flex'
+                  flexDir='column'
+                  alignItems='right'
+                  p='5px'
+                >
+                  <Text fontSize='10px' opacity='0.6' textAlign='right'>
+                    Last changes {note?.date?.slice(0, 21)}
+                  </Text>
+                  <ButtonGroup ml='auto' mt='10px'>
+                    <IconButton
+                      aria-label='Delete note'
+                      icon={<MdDeleteOutline />}
+                      size='md'
+                      colorScheme='red'
+                      onClick={() => onDeleteNote(note)}
+                    />
+                    <IconButton
+                      type='submit'
+                      aria-label='Save note'
+                      icon={<IoIosSave />}
+                      size='md'
+                      colorScheme='green'
+                    />
+                  </ButtonGroup>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
+        </ModalBody>
+      </ModalContent>
+    </Modal>
   );
 };
 

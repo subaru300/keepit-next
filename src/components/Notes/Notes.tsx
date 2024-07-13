@@ -34,9 +34,9 @@ const Notes = () => {
       justifyContent='center'
       alignItems='center'
       mb='auto'
-      w='100%'
+      w='95%'
     >
-      <Box w='50%' mb='10px'>
+      <Box w={{ base: '100%', md: '50%' }} mb='10px'>
         {isBlockVisible ? (
           <InputBlock onCancel={() => setIsBlockVisible(false)} />
         ) : (
@@ -52,7 +52,11 @@ const Notes = () => {
       ) : (
         <Center display='flex' flexDir='column'>
           <ImFileEmpty size={48} />
-          <Heading as='h6' fontSize='20px' mt='10px'>
+          <Heading
+            as='h6'
+            fontSize={{ base: '12px', sm: '18px', md: '20px' }}
+            mt='10px'
+          >
             Notes list is empty now. Please create your first one.
           </Heading>
         </Center>

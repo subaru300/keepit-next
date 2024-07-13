@@ -1,6 +1,7 @@
 import Search from '../Search/Search';
-import { Flex, Heading } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import ThemeToggle from '../ThemeToggle/ThemeToggle';
+import Burger from '../Burger/Burger';
 
 const Header = () => {
   return (
@@ -8,9 +9,19 @@ const Header = () => {
       w='100%'
       justifyContent='space-between'
       alignItems='center'
-      gap='20px'
+      gap={{ base: '5px', md: '20px' }}
     >
-      <Heading as='h2'>KeepIt</Heading>
+      <Box display={{ base: 'block', md: 'none' }}>
+        <Burger />
+      </Box>
+
+      <Heading
+        as='h2'
+        fontSize={{ base: '18px', md: '24px' }}
+        ml={{ md: '45px' }}
+      >
+        KeepIt
+      </Heading>
       <Search />
       <ThemeToggle />
     </Flex>

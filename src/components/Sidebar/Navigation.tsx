@@ -24,8 +24,13 @@ const Navigation = () => {
 
   return (
     <Box borderRight='1px' borderColor={borderColor} h='100%' pr='20px'>
-      <Tabs minW='100px'>
-        <TabList display='flex' flexDir='column'>
+      <Tabs
+        minW={{ md: '150px', base: '50px' }}
+        alignItems='center'
+        display='flex'
+        flexDir='column'
+      >
+        <TabList display='flex' flexDir='column' w='100%'>
           <Tab onClick={() => router.push('/notes')}>
             <FaRegNoteSticky size={22} />
           </Tab>

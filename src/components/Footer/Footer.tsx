@@ -1,6 +1,6 @@
 'use client';
 
-import { Flex, useColorModeValue } from '@chakra-ui/react';
+import { Center, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 
 const Footer = () => {
   const borderColor = useColorModeValue(
@@ -9,8 +9,14 @@ const Footer = () => {
   );
 
   return (
-    <Flex borderTop='1px' borderColor={borderColor}>
-      Footer
+    <Flex borderTop='1px' borderColor={borderColor} justifyContent='center'>
+      <Center>
+        <Text mt='20px' fontSize={{ base: '12px', md: '14px' }}>
+          This pet project was created using technologies such as Next.js,
+          TypeScript, React Redux Toolkit, Chakra UI Kit, React Formik and
+          others.
+        </Text>
+      </Center>
     </Flex>
   );
 };

@@ -75,14 +75,13 @@ const InputBlock = ({ onCancel }: Props) => {
           <Form>
             <Field name='heading' validate={validateField}>
               {({ field, form }: { field: any; form: any }) => (
-                <FormControl
-                // isInvalid={form.errors.heading && form.touched.heading}
-                >
+                <FormControl>
                   <Input
                     {...field}
                     type='text'
                     placeholder='Enter heading'
                     mb='5px'
+                    fontWeight='bold'
                   />
 
                   <FormErrorMessage mb='15px'>
@@ -106,11 +105,17 @@ const InputBlock = ({ onCancel }: Props) => {
                 </FormControl>
               )}
             </Field>
-            <Flex mb='5px' justifyContent='space-around'>
+            <Flex mb='15px' justifyContent='space-around'>
               <Field name='color'>
                 {({ field, form }: { field: any; form: any }) => (
                   <Flex alignItems='center'>
-                    <Input {...field} type='color' w='60px' border='none' />
+                    <Input
+                      {...field}
+                      type='color'
+                      w='60px'
+                      h='30px'
+                      border='none'
+                    />
                     <FormLabel fontSize='14px'>BG color</FormLabel>
                   </Flex>
                 )}

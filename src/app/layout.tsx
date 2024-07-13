@@ -26,9 +26,18 @@ export default function RootLayout({
           <Providers>
             <CSSReset />
             <Grid
-              templateAreas={`"header header"
-                  "nav main"
-                  "footer footer"`}
+              // templateAreas={`"header header"
+              //     "nav main"
+              //     "footer footer"`}
+
+              templateAreas={{
+                md: `"header header"
+                           "nav main"
+                           "footer footer"`,
+                base: `"header header"
+                           "main main"
+                           "footer footer"`,
+              }}
               gridTemplateRows={'auto 1fr 100px'}
               gridTemplateColumns={'auto 1fr'}
               h='100vh'
@@ -37,7 +46,11 @@ export default function RootLayout({
               <GridItem padding='5px' area={'header'}>
                 <Header />
               </GridItem>
-              <GridItem pl='2' area={'nav'}>
+              <GridItem
+                pl='2'
+                area={'nav'}
+                display={{ base: 'none', md: 'flex' }}
+              >
                 <Navigation />
               </GridItem>
               <GridItem

@@ -40,13 +40,17 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
   };
 
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} gridGap='15px'>
+    <SimpleGrid
+      columns={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+      gridGap={{ base: '10px', md: '15px' }}
+      w={{ base: '100%', md: 'auto' }}
+    >
       <ModalWindow isOpen={isOpen} onClose={onClose} note={selectedNote} />
       {notes.map(note => {
         return (
-          <GridItem key={note.id}>
+          <GridItem key={note.id} display='flex'>
             <Card
-              w='250px'
+              w={{ base: '100%', md: '250px' }}
               maxH='200px'
               minHeight='150px'
               position='relative'
@@ -58,7 +62,7 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
                   position='absolute'
                   top='10px'
                   right='10px'
-                  opacity='0'
+                  opacity={{ base: 1, md: '0' }}
                   _hover={{ opacity: 1 }}
                 >
                   <IconButton
