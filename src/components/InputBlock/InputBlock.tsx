@@ -55,10 +55,11 @@ const InputBlock = ({ onCancel }: Props) => {
 
       if (values.isInArchive) {
         dispatch(addToArchive(note));
+        showSuccessToast('Your note has been added to the archive.');
       } else {
         dispatch(addNote(note));
+        showSuccessToast('Your note has been added.');
       }
-      showSuccessToast('Your action has been completed successfully.');
       dispatch(setSearchText(''));
       onCancel();
     }, 500);

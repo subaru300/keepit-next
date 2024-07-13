@@ -64,7 +64,7 @@ const TrashNotesGrid = ({ notes, onRestoreNote, onDeleteNote }: Props) => {
                 <Heading as='h6' fontSize='20px'>
                   {note.title}
                 </Heading>
-                <Divider />
+                {note.title && <Divider />}
                 <Text fontSize='16px' whiteSpace='pre-wrap'>
                   {note.text}
                 </Text>

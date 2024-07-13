@@ -66,19 +66,20 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
 
       if (!editedHeader && !editedText) {
         dispatch(removeNote(note));
-        showSuccessToast('Your note was deleted.');
+        showDangerToast('Your note was deleted.');
         onClose();
         return;
       }
 
       if (values.isInArchive === false) {
         dispatch(editNote(editedNote));
+        showSuccessToast('Your note was edited.');
       } else {
         dispatch(addToArchive(note));
         dispatch(removeNote(note));
+        showSuccessToast('Your note has been added to the archive.');
       }
     }, 100);
-    showSuccessToast('Your action has been completed successfully.');
     onClose();
   };
 
@@ -93,7 +94,7 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
   const onDeleteNote = (note: INote) => {
     dispatch(removeNote(note));
     dispatch(addToTrash(note));
-    showDangerToast('Your action has been completed successfully.');
+    showDangerToast('The note has been moved to the trash.');
     onClose();
   };
 
