@@ -6,6 +6,7 @@ import Navigation from '@/components/Sidebar/Navigation';
 import Header from '@/components/Header/Header';
 import { fonts } from './fonts';
 import theme from './theme';
+import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
   title: 'KeepIt',
@@ -48,8 +49,8 @@ export default function RootLayout({
               >
                 {children}
               </GridItem>
-              <GridItem pl='2' bg='blue.300' area={'footer'}>
-                Footer
+              <GridItem pl='2' area={'footer'}>
+                <Footer />
               </GridItem>
             </Grid>
           </Providers>

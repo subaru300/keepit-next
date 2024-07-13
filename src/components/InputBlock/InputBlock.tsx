@@ -1,6 +1,6 @@
 import { useAppDispatch } from '@/lib/hooks';
 import { Field, Form, Formik, FormikHelpers } from 'formik';
-import { addData } from '@/lib/features/notes/notesSlice';
+import { addNote } from '@/lib/features/notes/notesSlice';
 import { setSearchText } from '@/lib/features/search/searchSlice';
 import { addToArchive } from '@/lib/features/archive/archiveSlice';
 import {
@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { v4 as uuidv4 } from 'uuid';
 import { FormValues } from '@/interface/interface';
+import useCustomToast from '@/hooks/useToast';
 
 interface Props {
   onCancel: () => void;
@@ -23,6 +24,7 @@ interface Props {
 
 const InputBlock = ({ onCancel }: Props) => {
   const dispatch = useAppDispatch();
+  const { showSuccessToast, showDangerToast } = useCustomToast();
 
   const validateField = (value: string) => {
     let error;
@@ -51,9 +53,9 @@ const InputBlock = ({ onCancel }: Props) => {
       if (values.isInArchive) {
         dispatch(addToArchive(note));
       } else {
-        dispatch(addData(note));
+        dispatch(addNote(note));
       }
-
+      showSuccessToast('Your action has been completed successfully.');
       dispatch(setSearchText(''));
       onCancel();
     }, 500);

@@ -10,9 +10,15 @@ export const trashSlice = createSlice({
     addToTrash: (state, action: PayloadAction<INote>) => {
       state.push(action.payload);
     },
+    removeFromTrash: (state, action: PayloadAction<INote>) => {
+      return state.filter(item => item.id !== action.payload.id);
+    },
+    clearTrash: (state, action: PayloadAction<string>) => {
+      return initialState;
+    },
   },
 });
 
-export const { addToTrash } = trashSlice.actions;
+export const { addToTrash, removeFromTrash, clearTrash } = trashSlice.actions;
 
 export default trashSlice.reducer;

@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-import ModalWindow from '../NotesModal/ModalWindow';
 import {
   ButtonGroup,
   Card,
@@ -14,16 +10,20 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
+import { LuArchiveRestore } from 'react-icons/lu';
 import { MdDeleteOutline } from 'react-icons/md';
-import { CiEdit } from 'react-icons/ci';
+import { FaEye } from 'react-icons/fa';
 import { INote } from '@/interface/interface';
+import ArchiveModal from '../ArchiveModal/ArchiveModal';
+import { useState } from 'react';
 
 interface Props {
   notes: INote[];
   onDeleteNote: (note: INote) => void;
+  onRestoreNote: (note: INote) => void;
 }
 
-const NotesGrid = ({ notes, onDeleteNote }: Props) => {
+const ArchiveNotesGrid = ({ notes, onDeleteNote, onRestoreNote }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedNote, setSelectedNote] = useState<INote>({
     id: '',
@@ -40,8 +40,9 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
   };
 
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} gridGap='15px'>
-      <ModalWindow isOpen={isOpen} onClose={onClose} note={selectedNote} />
+    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} gridGap='15px' mt='15px'>
+      <ArchiveModal isOpen={isOpen} onClose={onClose} note={selectedNote} />
+
       {notes.map(note => {
         return (
           <GridItem key={note.id}>
@@ -62,10 +63,16 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
                   _hover={{ opacity: 1 }}
                 >
                   <IconButton
-                    aria-label='Edit note'
-                    icon={<CiEdit />}
+                    aria-label='View note'
+                    icon={<FaEye />}
                     size='sm'
                     onClick={() => onOpenCardHandler(note)}
+                  />
+                  <IconButton
+                    aria-label='Restore note'
+                    icon={<LuArchiveRestore />}
+                    size='sm'
+                    onClick={() => onRestoreNote(note)}
                   />
                   <IconButton
                     aria-label='Delete note'
@@ -91,4 +98,4 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
   );
 };
 
-export default NotesGrid;
+export default ArchiveNotesGrid;

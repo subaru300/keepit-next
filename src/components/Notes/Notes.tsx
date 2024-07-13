@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import InputBlock from '../InputBlock/InputBlock';
 import { Box, Button, Center, Flex, Heading } from '@chakra-ui/react';
-import { removeData, sortData } from '@/lib/features/notes/notesSlice';
+import { removeNote, sortNotes } from '@/lib/features/notes/notesSlice';
 import CustomSelect from '../UI/CustomSelect/CusromSelect';
 import { selectFilteredNotes } from '@/lib/features/search/searchSelector';
 import NotesGrid from '../NotesGrid/NotesGrid';
@@ -17,13 +17,15 @@ const Notes = () => {
   const notes = useAppSelector(selectFilteredNotes);
   const dispatch = useAppDispatch();
 
+  console.log(notes);
+
   const onDeleteNote = (note: INote) => {
-    dispatch(removeData(note));
+    dispatch(removeNote(note));
     dispatch(addToTrash(note));
   };
 
   const onSortHandler = (value: string) => {
-    dispatch(sortData(value));
+    dispatch(sortNotes(value));
   };
 
   return (

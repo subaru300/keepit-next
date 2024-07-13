@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-import ModalWindow from '../NotesModal/ModalWindow';
 import {
   ButtonGroup,
   Card,
@@ -12,36 +8,20 @@ import {
   IconButton,
   SimpleGrid,
   Text,
-  useDisclosure,
 } from '@chakra-ui/react';
 import { MdDeleteOutline } from 'react-icons/md';
-import { CiEdit } from 'react-icons/ci';
+import { FaTrashRestore } from 'react-icons/fa';
 import { INote } from '@/interface/interface';
 
 interface Props {
   notes: INote[];
+  onRestoreNote: (note: INote) => void;
   onDeleteNote: (note: INote) => void;
 }
 
-const NotesGrid = ({ notes, onDeleteNote }: Props) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedNote, setSelectedNote] = useState<INote>({
-    id: '',
-    date: '',
-    title: '',
-    text: '',
-    bgColor: '',
-    isInArchive: false,
-  });
-
-  const onOpenCardHandler = (note: INote) => {
-    onOpen();
-    setSelectedNote(note);
-  };
-
+const TrashNotesGrid = ({ notes, onRestoreNote, onDeleteNote }: Props) => {
   return (
-    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3, xl: 4 }} gridGap='15px'>
-      <ModalWindow isOpen={isOpen} onClose={onClose} note={selectedNote} />
+    <SimpleGrid columns={{ sm: 1, md: 2, lg: 3 }} gridGap='15px' mt='15px'>
       {notes.map(note => {
         return (
           <GridItem key={note.id}>
@@ -50,7 +30,6 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
               maxH='200px'
               minHeight='150px'
               position='relative'
-              cursor='pointer'
               overflow='scroll'
             >
               <CardBody bgColor={note.bgColor} borderRadius='6px'>
@@ -62,15 +41,17 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
                   _hover={{ opacity: 1 }}
                 >
                   <IconButton
-                    aria-label='Edit note'
-                    icon={<CiEdit />}
+                    aria-label='Restore note'
+                    icon={<FaTrashRestore />}
                     size='sm'
-                    onClick={() => onOpenCardHandler(note)}
+                    cursor='pointer'
+                    onClick={() => onRestoreNote(note)}
                   />
                   <IconButton
                     aria-label='Delete note'
                     icon={<MdDeleteOutline />}
                     size='sm'
+                    cursor='pointer'
                     onClick={() => onDeleteNote(note)}
                   />
                 </ButtonGroup>
@@ -91,4 +72,4 @@ const NotesGrid = ({ notes, onDeleteNote }: Props) => {
   );
 };
 
-export default NotesGrid;
+export default TrashNotesGrid;

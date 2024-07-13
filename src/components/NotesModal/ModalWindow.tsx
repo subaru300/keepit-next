@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/lib/hooks';
 import { Field, Form, Formik, FormikHelpers } from 'formik';
-import { editNote, removeData } from '@/lib/features/notes/notesSlice';
+import { editNote, removeNote } from '@/lib/features/notes/notesSlice';
 import {
   ButtonGroup,
   Checkbox,
@@ -26,6 +26,7 @@ import { IoIosSave } from 'react-icons/io';
 import { addToTrash } from '@/lib/features/trash/trashSlice';
 import { addToArchive } from '@/lib/features/archive/archiveSlice';
 import { FormValues, INote } from '@/interface/interface';
+import useCustomToast from '@/hooks/useToast';
 
 interface Props {
   isOpen: boolean;
@@ -37,6 +38,7 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
   const [editedHeader, setEditedHeader] = useState('');
   const [editedText, setEditedText] = useState('');
   const dispatch = useAppDispatch();
+  const { showSuccessToast, showDangerToast } = useCustomToast();
 
   useEffect(() => {
     setEditedHeader(note.title);
@@ -60,7 +62,8 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
       };
 
       if (!editedHeader && !editedText) {
-        dispatch(removeData(note));
+        dispatch(removeNote(note));
+        showSuccessToast('Your note was deleted.');
         onClose();
         return;
       }
@@ -69,9 +72,10 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
         dispatch(editNote(editedNote));
       } else {
         dispatch(addToArchive(note));
-        dispatch(removeData(note));
+        dispatch(removeNote(note));
       }
     }, 100);
+    showSuccessToast('Your action has been completed successfully.');
     onClose();
   };
 
@@ -84,8 +88,9 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
   };
 
   const onDeleteNote = (note: INote) => {
-    dispatch(removeData(note));
+    dispatch(removeNote(note));
     dispatch(addToTrash(note));
+    showDangerToast('Your action has been completed successfully.');
     onClose();
   };
 
