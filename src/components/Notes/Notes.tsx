@@ -11,17 +11,18 @@ import NotesGrid from '../NotesGrid/NotesGrid';
 import { ImFileEmpty } from 'react-icons/im';
 import { addToTrash } from '@/lib/features/trash/trashSlice';
 import { INote } from '@/interface/interface';
+import useCustomToast from '@/hooks/useToast';
 
 const Notes = () => {
   const [isBlockVisible, setIsBlockVisible] = useState(false);
   const notes = useAppSelector(selectFilteredNotes);
   const dispatch = useAppDispatch();
-
-  console.log(notes);
+  const { showSuccessToast } = useCustomToast();
 
   const onDeleteNote = (note: INote) => {
     dispatch(removeNote(note));
     dispatch(addToTrash(note));
+    showSuccessToast('The note has been moved to the trash.');
   };
 
   const onSortHandler = (value: string) => {
