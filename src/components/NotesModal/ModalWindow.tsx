@@ -35,9 +35,10 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   note: INote;
+  isArchive?: boolean;
 }
 
-const ModalWindow = ({ isOpen, onClose, note }: Props) => {
+const ModalWindow = ({ isOpen, onClose, note, isArchive }: Props) => {
   const [editedHeader, setEditedHeader] = useState('');
   const [editedText, setEditedText] = useState('');
   const dispatch = useAppDispatch();
@@ -97,6 +98,35 @@ const ModalWindow = ({ isOpen, onClose, note }: Props) => {
     showDangerToast('The note has been moved to the trash.');
     onClose();
   };
+
+  if (isArchive) {
+    return (
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isCentered
+        motionPreset='slideInBottom'
+      >
+        <ModalOverlay />
+        <ModalContent minH={{ base: '50%', md: '350px' }} w='98%'>
+          <ModalHeader>{note.title}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody overflow='scroll' whiteSpace='pre-wrap'>
+            {note.text}
+          </ModalBody>
+          <ModalFooter display='flex' flexDir='column' alignItems='right'>
+            <Text textAlign='center' fontStyle='italic' opacity='0.6'>
+              The archive is read-only. Restore the note for editing or delete
+              it.
+            </Text>
+            <Text fontSize='10px' opacity='0.6' textAlign='right' mt='15px'>
+              Last changes {note?.date?.slice(0, 21)}
+            </Text>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  }
 
   return (
     <Modal

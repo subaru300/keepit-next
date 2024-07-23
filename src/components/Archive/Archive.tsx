@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import useCustomToast from '@/hooks/useToast';
 import {
   ButtonGroup,
   Card,
@@ -18,14 +19,13 @@ import {
 import { addToTrash } from '@/lib/features/trash/trashSlice';
 import { addNote } from '@/lib/features/notes/notesSlice';
 import { removeFromArchive } from '@/lib/features/archive/archiveSlice';
-import { IoArchive } from 'react-icons/io5';
 import { INote } from '@/interface/interface';
-import useCustomToast from '@/hooks/useToast';
 import NotesGrid from '../NotesGrid/NotesGrid';
+import ModalWindow from '../NotesModal/ModalWindow';
 import { FaEye } from 'react-icons/fa6';
+import { IoArchive } from 'react-icons/io5';
 import { MdDeleteOutline } from 'react-icons/md';
 import { LuArchiveRestore } from 'react-icons/lu';
-import ArchiveModal from '../ArchiveModal/ArchiveModal';
 import { motion } from 'framer-motion';
 
 const Archive = () => {
@@ -69,7 +69,12 @@ const Archive = () => {
       alignItems='center'
       mb='auto'
     >
-      <ArchiveModal isOpen={isOpen} onClose={onClose} note={selectedNote} />
+      <ModalWindow
+        isOpen={isOpen}
+        onClose={onClose}
+        note={selectedNote}
+        isArchive
+      />
 
       {notesInArchive.length === 0 && (
         <Center display='flex' flexDir='column'>
