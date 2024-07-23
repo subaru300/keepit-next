@@ -12,8 +12,12 @@ const CustomSelect = ({ notes, onSortHandler }: Props) => {
       <Select
         variant='flushed'
         disabled={notes.length <= 1 ? true : false}
+        defaultValue='default'
         onChange={e => onSortHandler(e.target.value)}
       >
+        <option value='default' disabled>
+          Sorting
+        </option>
         <option value='byDate'>By date</option>
         <option value='byHead'>By heading</option>
       </Select>

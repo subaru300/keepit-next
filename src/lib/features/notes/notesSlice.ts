@@ -22,7 +22,7 @@ export const notesSlice = createSlice({
     sortNotes: (state, action: PayloadAction<string>) => {
       const sortedState = [...state];
 
-      if (action.payload === 'noSort') return state;
+      if (action.payload === 'default') return state;
       if (action.payload === 'byDate') {
         return sortedState.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
