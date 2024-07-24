@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import useCustomToast from '@/hooks/useToast';
 import InputBlock from '../InputBlock/InputBlock';
@@ -19,7 +19,13 @@ import {
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { removeNote, sortNotes } from '@/lib/features/notes/notesSlice';
+import {
+  removeNote,
+  setCurrentPage,
+  setPaginatedNotes,
+  setTotalPages,
+  sortNotes,
+} from '@/lib/features/notes/notesSlice';
 import ModalWindow from '../NotesModal/ModalWindow';
 import CustomSelect from '../UI/CustomSelect/CusromSelect';
 import { selectFilteredNotes } from '@/lib/features/search/searchSelector';
@@ -30,11 +36,16 @@ import { CiEdit } from 'react-icons/ci';
 import { MdDeleteOutline } from 'react-icons/md';
 import { INote } from '@/interface/interface';
 import { motion } from 'framer-motion';
+import Pagination from '../Pagination/Pagination';
+import { getPageCount } from '@/utils/pages/pages';
 
 const Notes = () => {
   const [isBlockVisible, setIsBlockVisible] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const notes = useAppSelector(selectFilteredNotes);
+  const notes = useAppSelector(state => state.notes.notes);
+  const paginatedNotes = useAppSelector(selectFilteredNotes);
+  const page = useAppSelector(state => state.notes.currentPage);
+  const totalPages = useAppSelector(state => state.notes.totalPages);
   const [selectedNote, setSelectedNote] = useState<INote>({
     id: '',
     date: '',
@@ -43,8 +54,14 @@ const Notes = () => {
     bgColor: '',
     isInArchive: false,
   });
+
   const dispatch = useAppDispatch();
   const { showSuccessToast } = useCustomToast();
+
+  useEffect(() => {
+    dispatch(setTotalPages(getPageCount(notes.length, 15)));
+    dispatch(setPaginatedNotes(1));
+  }, [notes]);
 
   const onDeleteNote = (note: INote) => {
     dispatch(removeNote(note));
@@ -59,6 +76,11 @@ const Notes = () => {
   const onOpenCardHandler = (note: INote) => {
     onOpen();
     setSelectedNote(note);
+  };
+
+  const onPageChangeHandler = (page: number) => {
+    dispatch(setPaginatedNotes(page));
+    dispatch(setCurrentPage(page));
   };
 
   return (
@@ -89,9 +111,9 @@ const Notes = () => {
 
       <CustomSelect notes={notes} onSortHandler={onSortHandler} />
 
-      {notes.length ? (
+      {paginatedNotes.length ? (
         <NotesGrid>
-          {notes.map(note => {
+          {paginatedNotes.map(note => {
             return (
               <motion.li
                 layout
@@ -159,6 +181,12 @@ const Notes = () => {
           </Heading>
         </Center>
       )}
+      <Pagination
+        totalPages={totalPages}
+        page={page}
+        changePage={onPageChangeHandler}
+        isHidden={!paginatedNotes.length}
+      />
     </Flex>
   );
 };

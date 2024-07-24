@@ -4,9 +4,9 @@ import { Providers } from './providers';
 import StoreProvider from './StoreProvider';
 import Navigation from '@/components/Sidebar/Navigation';
 import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 import { fonts } from './fonts';
 import theme from './theme';
-import Footer from '@/components/Footer/Footer';
 
 export const metadata: Metadata = {
   title: 'KeepIt',

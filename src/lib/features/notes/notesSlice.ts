@@ -1,40 +1,70 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { INote } from '@/interface/interface';
 
-const initialState: INote[] = [];
+const initialState: {
+  notes: INote[];
+  totalPages: number;
+  currentPage: number;
+  notesPerPage: number;
+  paginatedNotes: INote[];
+} = {
+  notes: [],
+  totalPages: 0,
+  currentPage: 1,
+  notesPerPage: 15,
+  paginatedNotes: [],
+};
 
 export const notesSlice = createSlice({
   name: 'notes',
   initialState,
   reducers: {
     addNote: (state, action: PayloadAction<INote>) => {
-      state.push(action.payload);
+      state.notes.push(action.payload);
     },
     editNote: (state, action: PayloadAction<INote>) => {
-      const index = state.findIndex(note => note.id === action.payload.id);
+      const index = state.notes.findIndex(
+        note => note.id === action.payload.id
+      );
       if (index !== -1) {
-        state[index] = action.payload;
+        state.notes[index] = action.payload;
       }
     },
     removeNote: (state, action: PayloadAction<INote>) => {
-      return state.filter(item => item.id !== action.payload.id);
+      state.notes = state.notes.filter(item => item.id !== action.payload.id);
     },
     sortNotes: (state, action: PayloadAction<string>) => {
-      const sortedState = [...state];
-
-      if (action.payload === 'default') return state;
+      if (action.payload === 'default') return;
       if (action.payload === 'byDate') {
-        return sortedState.sort(
+        state.notes.sort(
           (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
         );
       } else if (action.payload === 'byHead') {
-        return sortedState.sort((a, b) => a.title.localeCompare(b.title));
+        state.notes.sort((a, b) => a.title.localeCompare(b.title));
       }
-      return sortedState;
+    },
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+    setTotalPages: (state, action: PayloadAction<number>) => {
+      state.totalPages = action.payload;
+    },
+    setPaginatedNotes: (state, action: PayloadAction<number>) => {
+      const startIndex = (action.payload - 1) * state.notesPerPage;
+      const lastIndex = startIndex + state.notesPerPage;
+      state.paginatedNotes = state.notes.slice(startIndex, lastIndex);
     },
   },
 });
 
-export const { addNote, editNote, removeNote, sortNotes } = notesSlice.actions;
+export const {
+  addNote,
+  editNote,
+  removeNote,
+  sortNotes,
+  setCurrentPage,
+  setTotalPages,
+  setPaginatedNotes,
+} = notesSlice.actions;
 
 export default notesSlice.reducer;
